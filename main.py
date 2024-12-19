@@ -8,9 +8,9 @@ import keras.utils as ku
 
 
 # set seeds for reproducability
-from tensorflow import random
+import tensorflow as tf
 from numpy.random import seed
-random.set_seed(2)
+tf.random.set_seed(2)
 seed(1)
 
 import pandas as pd
@@ -81,7 +81,7 @@ def generate_text(seed_text, next_words, model, max_sequence_len):
 warnings.filterwarnings("ignore")
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-curr_dir = "C:/Users/kukus/OneDrive/Рабочий стол/AI/lstm/dataset/"
+curr_dir = "dataset/"
 all_headlines = []
 
 for filename in os.listdir(curr_dir):
