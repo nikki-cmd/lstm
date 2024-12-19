@@ -3,8 +3,9 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.layers import Embedding, LSTM, Dense, Dropout
 from tensorflow.keras.preprocessing.text import Tokenizer
 from keras.callbacks import EarlyStopping
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 import keras.utils as ku 
+from keras import ops
 
 
 # set seeds for reproducability
@@ -89,6 +90,7 @@ for filename in os.listdir(curr_dir):
 		article_df = pd.read_csv(curr_dir + filename)
 		all_headlines.extend(list(article_df.headline.values))
 		break
+
 all_headlines = [h for h in all_headlines if h != "Unknown"]
 print(len(all_headlines))
 
@@ -102,12 +104,19 @@ predictors, label, max_sequence_len = generate_padded_sequences(inp_sequences)
 
 model =create_model(max_sequence_len, total_words)
 model.summary()
+ 
+to_train = False
+if to_train:
+    epochs = 100
+    verbose = 5
+    model.fit(predictors, label, epochs=epochs, verbose=verbose)
+    model.save('models/first_model_test.keras')
 
-model.fit(predictors, label, epochs = 100, verbose = 5)
+model = load_model("models/first_model_test.keras")
 
-print (generate_text("united states", 5, model, max_sequence_len))
-print (generate_text("preident trump", 4, model, max_sequence_len))
-print (generate_text("donald trump", 4, model, max_sequence_len))
-print (generate_text("india and china", 4, model, max_sequence_len))
-print (generate_text("new york", 4, model, max_sequence_len))
-print (generate_text("science and technology", 5, model, max_sequence_len))
+print (generate_text("united states", 20, model, max_sequence_len))
+print (generate_text("preident trump", 10, model, max_sequence_len))
+print (generate_text("donald trump", 20, model, max_sequence_len))
+print (generate_text("india and china", 10, model, max_sequence_len))
+print (generate_text("new york", 20, model, max_sequence_len))
+print (generate_text("science and technology", 10, model, max_sequence_len))
