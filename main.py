@@ -19,6 +19,7 @@ import string, os
 
 import warnings
 
+tokenizer = Tokenizer()
 
 def clean_text(txt):
 	txt = "".join(v for v in txt if v not in string.punctuation).lower()
@@ -27,7 +28,7 @@ def clean_text(txt):
 
 
 def get_sequence_of_tokens(corpus):
-	tokenizer = Tokenizer()
+	
 	tokenizer.fit_on_texts(corpus)
 	total_words = len(tokenizer.word_index) + 1
 
@@ -63,7 +64,6 @@ def create_model(max_sequence_len, total_words):
 
 
 def generate_text(seed_text, next_words, model, max_sequence_len):
-	tokenizer = Tokenizer()
 	for _ in range(next_words):
 		token_list = tokenizer.texts_to_sequences([seed_text])[0]
 		token_list = pad_sequences([token_list], maxlen=max_sequence_len-1, padding='pre')
@@ -103,7 +103,7 @@ predictors, label, max_sequence_len = generate_padded_sequences(inp_sequences)
 model =create_model(max_sequence_len, total_words)
 model.summary()
 
-model.fit(predictors, label, epochs = 1000, verbose = 5)
+model.fit(predictors, label, epochs = 100, verbose = 5)
 
 print (generate_text("united states", 5, model, max_sequence_len))
 print (generate_text("preident trump", 4, model, max_sequence_len))
