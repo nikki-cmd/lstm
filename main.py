@@ -107,12 +107,12 @@ model.summary()
  
 to_train = False
 if to_train:
-    epochs = 100
+    epochs = 1000
     verbose = 5
     model.fit(predictors, label, epochs=epochs, verbose=verbose)
-    model.save('models/first_model_test.keras')
+    model.save('models/model_test_1000epochs.keras')
 
-model = load_model("models/first_model_test.keras")
+model = load_model("models/model_test_1000epochs.keras")
 
 print (generate_text("united states", 20, model, max_sequence_len))
 print (generate_text("preident trump", 10, model, max_sequence_len))
@@ -120,3 +120,7 @@ print (generate_text("donald trump", 20, model, max_sequence_len))
 print (generate_text("india and china", 10, model, max_sequence_len))
 print (generate_text("new york", 20, model, max_sequence_len))
 print (generate_text("science and technology", 10, model, max_sequence_len))
+
+request = ""
+while request != "stop":
+    print(generate_text(input(), 20, model, max_sequence_len))
